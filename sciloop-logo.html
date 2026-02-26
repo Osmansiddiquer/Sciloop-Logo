@@ -167,12 +167,13 @@ let collapsed = false;
 const R = 18; // circle radius — matches lowercase o x-height
 const CY = 43; // vertical center — aligned with lowercase midline
 
-// Wordmark: two o's tangent (touching), like normal "oo" in sciloop
-const GAP = 0; // gap between 'l' and first circle — tight to letters
+// Wordmark: spacing calibrated for Outfit font
+const GAP = 0; // gap between 'l' and first circle
+const GAP_OO = 0; // gap between the two o-circles
 const GAP_P = 5; // gap between second circle and 'p'
 const SCIL_END = 107; // where 'scil' text visually ends
 const L_CX = SCIL_END + GAP + R; // left circle center
-const R_CX = L_CX + 2 * R; // right circle — tangent to left (distance = 2R)
+const R_CX = L_CX + 2 * R + GAP_OO; // right circle — with gap between o's
 const P_X = R_CX + R + GAP_P; // 'p' starts after right circle
 const SVG_W = P_X + 46;
 
@@ -325,11 +326,12 @@ logoArea.addEventListener('click', (e) => {
 function staticWordmark(scale, bgColor, isLight) {
   const r = R * scale;
   const gap = GAP * scale;
+  const gapOO = GAP_OO * scale;
   const gapP = GAP_P * scale;
   const cy = CY * scale;
   const scilEnd = SCIL_END * scale;
   const lcx = scilEnd + gap + r;
-  const rcx = lcx + 2 * r; // tangent circles, like normal "oo"
+  const rcx = lcx + 2 * r + gapOO;
   const px = rcx + r + gapP;
   const fs = 76 * scale;
   const bl = 62 * scale;
@@ -349,8 +351,11 @@ function staticWordmark(scale, bgColor, isLight) {
   const gapR = circleGapDash(r, GAP_ANG);
   const dashAttr = `stroke-dasharray="${gapR.array}" stroke-dashoffset="${gapR.offset}" stroke-linecap="butt"`;
 
+  const fontFace = `<style type="text/css">@font-face{font-family:'Outfit';font-style:normal;font-weight:300;font-display:swap;src:url(https://cdn.jsdelivr.net/npm/@fontsource/outfit@5.1.0/files/outfit-latin-300-normal.woff2) format('woff2');}</style>`;
+
   return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
     <defs>
+      ${fontFace}
       <linearGradient id="${bId}" x1="0%" y1="0%" x2="100%" y2="100%">${bStops}</linearGradient>
       <linearGradient id="${oId}" x1="0%" y1="0%" x2="100%" y2="100%">${oStops}</linearGradient>
     </defs>

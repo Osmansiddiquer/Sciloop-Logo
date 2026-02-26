@@ -2,18 +2,33 @@
 /**
  * Export the 4 SciLoop logo variants as SVG files.
  * Logic mirrors sciloop-logo.html so exports stay in sync.
+ * Embeds Outfit font as base64 so SVGs render correctly in design tools / file:// contexts.
  * Run from repo root: node scripts/export-logos.js
  */
 
 const fs = require('fs');
 const path = require('path');
+const https = require('https');
 
 const ROOT = path.join(__dirname, '..');
+const FONT_URL = 'https://cdn.jsdelivr.net/npm/@fontsource/outfit@5.1.0/files/outfit-latin-300-normal.woff2';
 
-// Same constants as sciloop-logo.html
+function fetchFontBase64() {
+  return new Promise((resolve, reject) => {
+    https.get(FONT_URL, (res) => {
+      const chunks = [];
+      res.on('data', (c) => chunks.push(c));
+      res.on('end', () => resolve(Buffer.concat(chunks).toString('base64')));
+      res.on('error', reject);
+    }).on('error', reject);
+  });
+}
+
+// Same constants as sciloop-logo.html (must stay in sync)
 const R = 18;
 const CY = 43;
 const GAP = 0;
+const GAP_OO = 0;
 const GAP_P = 5;
 const SCIL_END = 107;
 const CUT_ANG = Math.PI / 4;
@@ -28,12 +43,14 @@ function circleGapDash(r, gapAng, cutAng = CUT_ANG) {
   return { array: `${c - gapLen} ${gapLen}`, offset };
 }
 
-function staticWordmark(scale, isLight) {
+function staticWordmark(scale, isLight, fontBase64) {
   const r = R * scale;
+  const gap = GAP * scale;
+  const gapOO = GAP_OO * scale;
   const cy = CY * scale;
   const scilEnd = SCIL_END * scale;
-  const lcx = scilEnd + GAP * scale + r;
-  const rcx = lcx + 2 * r;
+  const lcx = scilEnd + gap + r;
+  const rcx = lcx + 2 * r + gapOO;
   const px = rcx + r + GAP_P * scale;
   const fs = 76 * scale;
   const bl = 62 * scale;
@@ -53,8 +70,14 @@ function staticWordmark(scale, isLight) {
   const gapR = circleGapDash(r, GAP_ANG);
   const dashAttr = `stroke-dasharray="${gapR.array}" stroke-dashoffset="${gapR.offset}" stroke-linecap="butt"`;
 
+  const fontSrc = fontBase64
+    ? `url(data:font/woff2;base64,${fontBase64})`
+    : `url(${FONT_URL})`;
+  const fontFace = `<style type="text/css">@font-face{font-family:'Outfit';font-style:normal;font-weight:300;font-display:swap;src:${fontSrc} format('woff2');}</style>`;
+
   return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
     <defs>
+      ${fontFace}
       <linearGradient id="${bId}" x1="0%" y1="0%" x2="100%" y2="100%">${bStops}</linearGradient>
       <linearGradient id="${oId}" x1="0%" y1="0%" x2="100%" y2="100%">${oStops}</linearGradient>
     </defs>
@@ -92,17 +115,33 @@ function staticMark(size, isLight) {
   </svg>`;
 }
 
-const variants = [
-  { name: 'wordmark-dark', svg: staticWordmark(0.68, false) },
-  { name: 'wordmark-light', svg: staticWordmark(0.68, true) },
-  { name: 'mark-dark', svg: staticMark(100, false) },
-  { name: 'mark-light', svg: staticMark(100, true) },
-];
+async function main() {
+  let fontBase64;
+  try {
+    fontBase64 = await fetchFontBase64();
+    console.log('Fetched Outfit font for embedding.');
+  } catch (err) {
+    console.warn('Could not fetch font, using URL fallback:', err.message);
+    fontBase64 = null;
+  }
 
-variants.forEach(({ name, svg }) => {
-  const file = path.join(ROOT, `${name}.svg`);
-  fs.writeFileSync(file, svg.trim() + '\n', 'utf8');
-  console.log('Written:', file);
+  const variants = [
+    { name: 'wordmark-dark', svg: staticWordmark(0.68, false, fontBase64) },
+    { name: 'wordmark-light', svg: staticWordmark(0.68, true, fontBase64) },
+    { name: 'mark-dark', svg: staticMark(100, false) },
+    { name: 'mark-light', svg: staticMark(100, true) },
+  ];
+
+  variants.forEach(({ name, svg }) => {
+    const file = path.join(ROOT, `${name}.svg`);
+    fs.writeFileSync(file, svg.trim() + '\n', 'utf8');
+    console.log('Written:', file);
+  });
+
+  console.log('Done. Exported 4 logo variants.');
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
 });
-
-console.log('Done. Exported 4 logo variants.');
