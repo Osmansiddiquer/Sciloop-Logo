@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SciLoop — Logo System</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --blue-1: #1464c0;
+    --blue-2: #2d8cf0;
+    --blue-3: #5aabff;
+    --orange-1: #d66d12;
+    --orange-2: #ef8c30;
+    --orange-3: #f9b35c;
+    --bg: #0b1120;
+    --dur: 0.75s;
+    --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    min-height: 100vh;
+    background: var(--bg);
+    font-family: 'Outfit', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 8vh;
+    overflow-x: hidden;
+    color: #fff;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  .logo-area {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    padding: 20px;
+  }
+
+  #logo { overflow: visible; }
+
+  .tagline {
+    margin-top: 14px;
+    font-size: 12px;
+    font-weight: 300;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+    transition: opacity var(--dur) var(--ease);
+  }
+
+  .controls {
+    margin-top: 44px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+
+  .btn {
+    padding: 10px 28px;
+    border: 1px solid rgba(45,140,240,0.25);
+    background: rgba(45,140,240,0.06);
+    color: var(--blue-2);
+    font-family: 'Outfit', sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+  .btn:hover {
+    background: rgba(45,140,240,0.12);
+    border-color: rgba(45,140,240,0.4);
+  }
+
+  .lbl {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.2);
+  }
+
+  .divider { width: 60px; height: 1px; background: rgba(255,255,255,0.06); margin: 70px 0 20px; }
+  .sec-title { font-size: 11px; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.15); margin-bottom: 40px; }
+  .showcase { display: flex; gap: 40px; flex-wrap: wrap; justify-content: center; padding-bottom: 80px; }
+  .card { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .card-inner { border-radius: 14px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: opacity 0.2s ease, transform 0.2s ease; }
+  .card-inner:hover { opacity: 0.9; transform: scale(1.02); }
+  .card-inner:active { transform: scale(0.98); }
+  .cd { background: #0c1225; border: 1px solid rgba(255,255,255,0.04); }
+  .cl { background: #f0f2f6; border: 1px solid rgba(0,0,0,0.06); }
+  .card-label { font-size: 10px; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.2); }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="logo-area" id="logoArea">
+    <svg id="logo" xmlns="http://www.w3.org/2000/svg" overflow="visible">
+      <defs>
+        <linearGradient id="gB" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#1464c0"/>
+          <stop offset="50%" stop-color="#2d8cf0"/>
+          <stop offset="100%" stop-color="#5aabff"/>
+        </linearGradient>
+        <linearGradient id="gO" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d66d12"/>
+          <stop offset="50%" stop-color="#ef8c30"/>
+          <stop offset="100%" stop-color="#f9b35c"/>
+        </linearGradient>
+      </defs>
+
+      <text id="txtScil" x="0" y="62" font-family="Outfit, sans-serif" font-weight="300" font-size="76" fill="url(#gB)">scil</text>
+      <circle id="loopL" cx="143" cy="43" r="18" fill="none" stroke="url(#gB)" stroke-width="4.2" stroke-linecap="round"/>
+      <circle id="loopR" cx="179" cy="43" r="18" fill="none" stroke="url(#gO)" stroke-width="4.2" stroke-linecap="butt"/>
+      <text id="txtP" font-family="Outfit, sans-serif" font-weight="300" font-size="76" fill="url(#gO)">p</text>
+    </svg>
+  </div>
+
+  <div class="tagline" id="tagline">Pioneering AI-Driven Discovery</div>
+
+  <div class="controls">
+    <span class="lbl" id="stateLabel">Wordmark</span>
+    <button class="btn" id="toggleBtn">Toggle Logo Mark</button>
+  </div>
+</div>
+
+<div class="divider"></div>
+<div class="sec-title">Logo Variants</div>
+<div class="showcase" id="showcase"></div>
+
+<script>
+const logo = document.getElementById('logo');
+const txtScil = document.getElementById('txtScil');
+const txtP = document.getElementById('txtP');
+const loopL = document.getElementById('loopL');
+const loopR = document.getElementById('loopR');
+const tagline = document.getElementById('tagline');
+const stateLabel = document.getElementById('stateLabel');
+const toggleBtn = document.getElementById('toggleBtn');
+const logoArea = document.getElementById('logoArea');
+
+let collapsed = false;
+
+// ============================================================
+// GEOMETRY — TIGHT KERNING
+// ============================================================
+// "scil" at font-size 76 ends around x≈120.
+// The two o-circles (r=18) sit right after with minimal gap.
+// Left circle center is ~2px after end of 'l'.
+// Right circle overlaps left by ~16px (shared overlap).
+// 'p' starts right after the right circle edge.
+
+const R = 18; // circle radius — matches lowercase o x-height
+const CY = 43; // vertical center — aligned with lowercase midline
+
+// Wordmark: two o's tangent (touching), like normal "oo" in sciloop
+const GAP = 0; // gap between 'l' and first circle — tight to letters
+const GAP_P = 5; // gap between second circle and 'p'
+const SCIL_END = 107; // where 'scil' text visually ends
+const L_CX = SCIL_END + GAP + R; // left circle center
+const R_CX = L_CX + 2 * R; // right circle — tangent to left (distance = 2R)
+const P_X = R_CX + R + GAP_P; // 'p' starts after right circle
+const SVG_W = P_X + 46;
+
+// Cut on right circle — top-right of circle. Real gap (no background hack).
+const CUT_ANG = Math.PI / 4; // wordmark: top-right (~1:30)
+const CUT_ANG_MARK = Math.PI / 6; // logo mark: between 1 and 1:30 (smaller = toward 2 o'clock from 12)
+const GAP_ANG = 0.24; // angular width of gap (wordmark)
+const GAP_ANG_MARK = 0.42; // bigger gap for logo mark
+
+const W = {
+  lcx: L_CX, lcy: CY, lr: R,
+  rcx: R_CX, rcy: CY, rr: R,
+  sw: 4.2,
+  gapAng: GAP_ANG,
+  cutAng: CUT_ANG,
+  scilX: 0,
+  px: P_X, py: 62,
+  svgW: SVG_W, svgH: 80,
+  textOpacity: 1,
+  fontSize: 76,
+};
+
+// Mark state — diagonal overlapping circles, 1:1 square
+const MS = 130;
+const MR = 34;
+const M = {
+  lcx: MS * 0.38, lcy: MS * 0.62, lr: MR,
+  rcx: MS * 0.62, rcy: MS * 0.38, rr: MR,
+  sw: 5.5,
+  gapAng: GAP_ANG_MARK,
+  cutAng: CUT_ANG_MARK,
+  scilX: -200, // offscreen
+  px: MS + 50, py: 62, // offscreen
+  svgW: MS, svgH: MS,
+  textOpacity: 0,
+  fontSize: 76,
+};
+
+// ============================================================
+// LERP + ANIMATE
+// ============================================================
+// Real gap in right circle: stroke-dasharray creates transparent gap (works on any background)
+function circleGapDash(r, gapAng, cutAng = CUT_ANG) {
+  const c = 2 * Math.PI * r;
+  const gapLen = r * gapAng;
+  const offset = r * (cutAng + gapAng / 2 - 2 * Math.PI);
+  return { array: `${c - gapLen} ${gapLen}`, offset };
+}
+
+function lerp(a, b, t) { return a + (b - a) * t; }
+
+let animFrame = null;
+
+function animateTransition(from, to, duration) {
+  if (animFrame) cancelAnimationFrame(animFrame);
+  const start = performance.now();
+
+  function tick(now) {
+    const elapsed = now - start;
+    const rawT = Math.min(elapsed / duration, 1);
+    const t = rawT < 0.5
+      ? 4 * rawT * rawT * rawT
+      : 1 - Math.pow(-2 * rawT + 2, 3) / 2;
+
+    const s = {};
+    for (const key of Object.keys(from)) {
+      if (typeof from[key] === 'number') {
+        s[key] = lerp(from[key], to[key], t);
+      } else {
+        s[key] = t < 0.5 ? from[key] : to[key];
+      }
+    }
+
+    logo.setAttribute('width', s.svgW);
+    logo.setAttribute('height', s.svgH);
+    logo.setAttribute('viewBox', `0 0 ${s.svgW} ${s.svgH}`);
+
+    loopL.setAttribute('cx', s.lcx);
+    loopL.setAttribute('cy', s.lcy);
+    loopL.setAttribute('r', s.lr);
+    loopL.setAttribute('stroke-width', s.sw);
+
+    loopR.setAttribute('cx', s.rcx);
+    loopR.setAttribute('cy', s.rcy);
+    loopR.setAttribute('r', s.rr);
+    loopR.setAttribute('stroke-width', s.sw);
+
+    const gapR = circleGapDash(s.rr, s.gapAng, s.cutAng);
+    loopR.setAttribute('stroke-dasharray', gapR.array);
+    loopR.setAttribute('stroke-dashoffset', gapR.offset);
+    loopR.setAttribute('stroke-linecap', 'butt');
+
+    txtScil.setAttribute('x', s.scilX);
+    txtScil.style.opacity = s.textOpacity;
+    txtP.setAttribute('x', s.px);
+    txtP.setAttribute('y', s.py);
+    txtP.style.opacity = s.textOpacity;
+
+    if (rawT < 1) {
+      animFrame = requestAnimationFrame(tick);
+    }
+  }
+
+  animFrame = requestAnimationFrame(tick);
+}
+
+// Init
+function applyImmediate(s) {
+  logo.setAttribute('width', s.svgW);
+  logo.setAttribute('height', s.svgH);
+  logo.setAttribute('viewBox', `0 0 ${s.svgW} ${s.svgH}`);
+  loopL.setAttribute('cx', s.lcx);
+  loopL.setAttribute('cy', s.lcy);
+  loopL.setAttribute('r', s.lr);
+  loopL.setAttribute('stroke-width', s.sw);
+  loopR.setAttribute('cx', s.rcx);
+  loopR.setAttribute('cy', s.rcy);
+  loopR.setAttribute('r', s.rr);
+  loopR.setAttribute('stroke-width', s.sw);
+  const gapR = circleGapDash(s.rr, s.gapAng, s.cutAng);
+  loopR.setAttribute('stroke-dasharray', gapR.array);
+  loopR.setAttribute('stroke-dashoffset', gapR.offset);
+  loopR.setAttribute('stroke-linecap', 'butt');
+  txtScil.setAttribute('x', s.scilX);
+  txtScil.style.opacity = s.textOpacity;
+  txtP.setAttribute('x', s.px);
+  txtP.setAttribute('y', s.py);
+  txtP.style.opacity = s.textOpacity;
+}
+
+applyImmediate(W);
+
+function toggle() {
+  collapsed = !collapsed;
+  stateLabel.textContent = collapsed ? 'Logo Mark' : 'Wordmark';
+  toggleBtn.textContent = collapsed ? 'Toggle Wordmark' : 'Toggle Logo Mark';
+  tagline.style.opacity = collapsed ? '0' : '1';
+  animateTransition(collapsed ? W : M, collapsed ? M : W, 800);
+}
+
+toggleBtn.addEventListener('click', toggle);
+logoArea.addEventListener('click', (e) => {
+  if (e.target.closest('.btn')) return;
+  toggle();
+});
+
+// ============================================================
+// SHOWCASE
+// ============================================================
+function staticWordmark(scale, bgColor, isLight) {
+  const r = R * scale;
+  const gap = GAP * scale;
+  const gapP = GAP_P * scale;
+  const cy = CY * scale;
+  const scilEnd = SCIL_END * scale;
+  const lcx = scilEnd + gap + r;
+  const rcx = lcx + 2 * r; // tangent circles, like normal "oo"
+  const px = rcx + r + gapP;
+  const fs = 76 * scale;
+  const bl = 62 * scale;
+  const sw = 4.2 * scale;
+  const w = px + 46 * scale;
+  const h = 80 * scale;
+
+  const bId = isLight ? 'swbL' : 'swbD';
+  const oId = isLight ? 'swoL' : 'swoD';
+  const bStops = isLight
+    ? '<stop offset="0%" stop-color="#0c4a96"/><stop offset="100%" stop-color="#1a6dd4"/>'
+    : '<stop offset="0%" stop-color="#1464c0"/><stop offset="50%" stop-color="#2d8cf0"/><stop offset="100%" stop-color="#5aabff"/>';
+  const oStops = isLight
+    ? '<stop offset="0%" stop-color="#b85c10"/><stop offset="100%" stop-color="#d66d12"/>'
+    : '<stop offset="0%" stop-color="#d66d12"/><stop offset="50%" stop-color="#ef8c30"/><stop offset="100%" stop-color="#f9b35c"/>';
+
+  const gapR = circleGapDash(r, GAP_ANG);
+  const dashAttr = `stroke-dasharray="${gapR.array}" stroke-dashoffset="${gapR.offset}" stroke-linecap="butt"`;
+
+  return `<svg width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="${bId}" x1="0%" y1="0%" x2="100%" y2="100%">${bStops}</linearGradient>
+      <linearGradient id="${oId}" x1="0%" y1="0%" x2="100%" y2="100%">${oStops}</linearGradient>
+    </defs>
+    <text x="0" y="${bl}" font-family="Outfit,sans-serif" font-weight="300" font-size="${fs}" fill="url(#${bId})">scil</text>
+    <circle cx="${lcx}" cy="${cy}" r="${r}" fill="none" stroke="url(#${bId})" stroke-width="${sw}"/>
+    <circle cx="${rcx}" cy="${cy}" r="${r}" fill="none" stroke="url(#${oId})" stroke-width="${sw}" ${dashAttr}/>
+    <text x="${px}" y="${bl}" font-family="Outfit,sans-serif" font-weight="300" font-size="${fs}" fill="url(#${oId})">p</text>
+  </svg>`;
+}
+
+function staticMark(size, bgColor, isLight) {
+  const r = size * 0.28;
+  const cx1 = size * 0.38, cy1 = size * 0.62;
+  const cx2 = size * 0.62, cy2 = size * 0.38;
+  const sw = 5;
+  const bId = isLight ? 'mBL' : 'mBD';
+  const oId = isLight ? 'mOL' : 'mOD';
+  const bStops = isLight
+    ? '<stop offset="0%" stop-color="#0c4a96"/><stop offset="50%" stop-color="#1464c0"/><stop offset="100%" stop-color="#1a6dd4"/>'
+    : '<stop offset="0%" stop-color="#1464c0"/><stop offset="50%" stop-color="#2d8cf0"/><stop offset="100%" stop-color="#5aabff"/>';
+  const oStops = isLight
+    ? '<stop offset="0%" stop-color="#b85c10"/><stop offset="50%" stop-color="#d66d12"/><stop offset="100%" stop-color="#ef8c30"/>'
+    : '<stop offset="0%" stop-color="#d66d12"/><stop offset="50%" stop-color="#ef8c30"/><stop offset="100%" stop-color="#f9b35c"/>';
+  // Logo mark: use CUT_ANG_MARK so gap sits at ~1:30 (wordmark stays CUT_ANG)
+  const gapR = circleGapDash(r, GAP_ANG_MARK, CUT_ANG_MARK);
+  const dashAttr = `stroke-dasharray="${gapR.array}" stroke-dashoffset="${gapR.offset}" stroke-linecap="butt"`;
+
+  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="${bId}" x1="0%" y1="100%" x2="100%" y2="0%">${bStops}</linearGradient>
+      <linearGradient id="${oId}" x1="0%" y1="100%" x2="100%" y2="0%">${oStops}</linearGradient>
+    </defs>
+    <circle cx="${cx1}" cy="${cy1}" r="${r}" fill="none" stroke="url(#${bId})" stroke-width="${sw}"/>
+    <circle cx="${cx2}" cy="${cy2}" r="${r}" fill="none" stroke="url(#${oId})" stroke-width="${sw}" ${dashAttr}/>
+  </svg>`;
+}
+
+document.getElementById('showcase').innerHTML = `
+  <div class="card">
+    <div class="card-inner cd" data-variant="wordmark-dark" style="padding:28px 36px;">${staticWordmark(0.68, '#0c1225', false)}</div>
+    <span class="card-label">Dark — Wordmark</span>
+  </div>
+  <div class="card">
+    <div class="card-inner cd" data-variant="mark-dark" style="padding:22px;">${staticMark(100, '#0c1225', false)}</div>
+    <span class="card-label">Mark — 1:1</span>
+  </div>
+  <div class="card">
+    <div class="card-inner cl" data-variant="wordmark-light" style="padding:28px 36px;">${staticWordmark(0.68, '#f0f2f6', true)}</div>
+    <span class="card-label">Light — Wordmark</span>
+  </div>
+  <div class="card">
+    <div class="card-inner cl" data-variant="mark-light" style="padding:22px;">${staticMark(100, '#f0f2f6', true)}</div>
+    <span class="card-label">Mark — Light</span>
+  </div>
+`;
+
+// ============================================================
+// CLICK TO DOWNLOAD SVG
+// ============================================================
+function downloadSvg(svgString, filename) {
+  const blob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename || 'sciloop-logo.svg';
+  a.style.display = 'none';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function getSvgForVariant(variant) {
+  switch (variant) {
+    case 'wordmark-dark':
+      return { svg: staticWordmark(0.68, '#0c1225', false), filename: 'sciloop-wordmark-dark.svg' };
+    case 'mark-dark':
+      return { svg: staticMark(100, '#0c1225', false), filename: 'sciloop-mark-dark.svg' };
+    case 'wordmark-light':
+      return { svg: staticWordmark(0.68, '#f0f2f6', true), filename: 'sciloop-wordmark-light.svg' };
+    case 'mark-light':
+      return { svg: staticMark(100, '#f0f2f6', true), filename: 'sciloop-mark-light.svg' };
+    default:
+      return null;
+  }
+}
+
+document.getElementById('showcase').addEventListener('click', (e) => {
+  const inner = e.target.closest('.card-inner[data-variant]');
+  if (!inner) return;
+  const variant = inner.getAttribute('data-variant');
+  const info = getSvgForVariant(variant);
+  if (info) {
+    downloadSvg(info.svg, info.filename);
+  }
+});
+</script>
+</body>
+</html>

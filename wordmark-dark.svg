@@ -1,0 +1,10 @@
+<svg width="156.4" height="54.400000000000006" viewBox="0 0 156.4 54.400000000000006" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="swbD" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#1464c0"/><stop offset="50%" stop-color="#2d8cf0"/><stop offset="100%" stop-color="#5aabff"/></linearGradient>
+      <linearGradient id="swoD" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#d66d12"/><stop offset="50%" stop-color="#ef8c30"/><stop offset="100%" stop-color="#f9b35c"/></linearGradient>
+    </defs>
+    <text x="0" y="42.160000000000004" font-family="Outfit,sans-serif" font-weight="300" font-size="51.68000000000001" fill="url(#swbD)">scil</text>
+    <circle cx="85" cy="29.240000000000002" r="12.24" fill="none" stroke="url(#swbD)" stroke-width="2.8560000000000003"/>
+    <circle cx="109.48" cy="29.240000000000002" r="12.24" fill="none" stroke="url(#swoD)" stroke-width="2.8560000000000003" stroke-dasharray="73.96858815987814 2.9375999999999998" stroke-dashoffset="-65.82411463989337" stroke-linecap="butt"/>
+    <text x="125.12" y="42.160000000000004" font-family="Outfit,sans-serif" font-weight="300" font-size="51.68000000000001" fill="url(#swoD)">p</text>
+  </svg>

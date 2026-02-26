@@ -1,0 +1,33 @@
+# On push, export the 4 logo variants to SVG and commit them if changed.
+name: Export logo SVGs
+
+on:
+  push:
+    branches: [main, master]
+
+jobs:
+  export:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    # Skip if the last commit was from this workflow (avoid loop)
+    if: "!contains(github.event.head_commit.message, '[CI] Export logo SVGs')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Export logo variants
+        run: node scripts/export-logos.js
+
+      - name: Commit and push if SVGs changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add wordmark-dark.svg wordmark-light.svg mark-dark.svg mark-light.svg
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "[CI] Export logo SVGs"
+            git push
+          fi
